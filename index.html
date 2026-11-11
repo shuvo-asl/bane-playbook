@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bane Invoice — Framework Reference</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #5b8dee;
+    --accent2: #a78bfa;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --code-bg: #0d1117;
+    --tag-bg: #1e2535;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  nav {
+    width: 240px;
+    min-width: 240px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  nav .logo {
+    padding: 0 20px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  nav a {
+    display: block;
+    padding: 5px 20px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  nav a:hover, nav a.active {
+    color: var(--text);
+    border-left-color: var(--accent);
+  }
+  nav .section-label {
+    padding: 14px 20px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  main {
+    flex: 1;
+    padding: 40px 60px;
+    max-width: 940px;
+  }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 52px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: 24px;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin: 24px 0 10px;
+    scroll-margin-top: 24px;
+  }
+  h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin: 16px 0 6px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  p { color: var(--text); margin-bottom: 10px; }
+  ul { padding-left: 20px; margin-bottom: 10px; }
+  li { margin-bottom: 4px; color: var(--text); }
+  .subtitle { color: var(--muted); margin-bottom: 32px; font-size: 13px; }
+  code {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 12px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #a5d6ff;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12.5px;
+    color: #c9d1d9;
+  }
+  .kw  { color: #ff7b72; }
+  .str { color: #a5d6ff; }
+  .comment { color: #6e7681; font-style: italic; }
+  .fn  { color: #d2a8ff; }
+  .num { color: #79c0ff; }
+  .dec { color: #ffa657; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--surface);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tr:last-child td { border-bottom: none; }
+  td code { font-size: 11.5px; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+  .tag-required { background: #3b1c1c; color: #f87171; }
+  .tag-optional { background: #1c2b1c; color: #86efac; }
+  .callout {
+    border-left: 3px solid var(--warn);
+    background: #1f1a0e;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: 13px;
+    color: #fde68a;
+  }
+  .callout.danger {
+    border-left-color: var(--danger);
+    background: #1f0e0e;
+    color: #fca5a5;
+  }
+  .callout.info {
+    border-left-color: var(--accent);
+    background: #0e1a2f;
+    color: #93c5fd;
+  }
+  .callout.success {
+    border-left-color: var(--success);
+    background: #0a1f0e;
+    color: #86efac;
+  }
+  .callout strong { font-weight: 700; }
+  .rbox {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 10px 0;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+  }
+  .rbox .k { color: #79c0ff; }
+  .rbox .s { color: #a5d6ff; }
+  .rbox .n { color: #ffa657; }
+  .rbox .c { color: #6e7681; font-style: italic; }
+  .rbox .m { color: var(--muted); }
+  .signal-row td:first-child { font-family: monospace; font-size: 12px; color: #d2a8ff; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+  .pill {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--tag-bg);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .pill.green  { background: #0d2016; color: #4ade80; border-color: #166534; }
+  .pill.red    { background: #200d0d; color: #f87171; border-color: #7f1d1d; }
+  .pill.blue   { background: #0d1a30; color: #60a5fa; border-color: #1e3a5f; }
+  .pill.purple { background: #1a0d30; color: #c084fc; border-color: #581c87; }
+  .pill.yellow { background: #201a0d; color: #fbbf24; border-color: #78350f; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  .two-col pre { margin: 0; }
+  .label-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .label-sm { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Framework Reference</div>
+  <div class="section-label">Request Pipeline</div>
+  <a href="#middleware">Middleware &amp; Request</a>
+  <div class="section-label">Views</div>
+  <a href="#viewsets">ViewSets &amp; Generic Views</a>
+  <a href="#viewset-vars">ViewSet Variables</a>
+  <a href="#viewset-example">Complete Example</a>
+  <a href="#filtering">Filtering &amp; Tabs</a>
+  <a href="#bare-views">Bare API Views</a>
+  <div class="section-label">Responses</div>
+  <a href="#build-response">build_response</a>
+  <a href="#pagination">Pagination</a>
+  <div class="section-label">Errors</div>
+  <a href="#exception-handler">Exception Handler</a>
+  <div class="section-label">Models</div>
+  <a href="#soft-delete">Soft Delete</a>
+  <a href="#timestamps">Timestamps</a>
+  <a href="#company-settings">Company Settings</a>
+  <div class="section-label">Activity Log</div>
+  <a href="#activity-log">Activity Log Model</a>
+  <a href="#changes-format">Changes Format</a>
+  <a href="#signals">Auto-logging Signals</a>
+  <a href="#bulk-ops">Bulk Operations</a>
+  <a href="#system-actor">System Actor</a>
+  <a href="#activity-id">Activity ID</a>
+  <a href="#celery-tasks">Celery Tasks</a>
+  <div class="section-label">RPC / BAS</div>
+  <a href="#rpc">RPC Layer</a>
+  <div class="section-label">Misc</div>
+  <a href="#permissions">Permissions</a>
+  <a href="#serializers">Serializers</a>
+</nav>
+
+<main>
+  <h1>Framework Reference</h1>
+  <p class="subtitle">Internal patterns and conventions — Bane Invoice Backend</p>
+  <p>This document is a framework-level reference for the backend conventions used across the project. It explains the shared patterns, request lifecycle, model behavior, logging conventions, and extension points that developers are expected to follow when building or modifying features. It is not a product specification or a feature catalog; it describes the operating model of the application rather than the business logic of any single module.</p>
+
+  <!-- ===== MIDDLEWARE ===== -->
+  <h2 id="middleware">Middleware &amp; Request Enrichment</h2>
+  <p>Two middleware classes run on every request. Understanding what they attach to <code>request</code> is essential before reading the view/log sections.</p>
+
+  <h3>RequestMiddleware</h3>
+  <p>File: <code>main/middleware.py</code>. Runs first. Attaches context used everywhere.</p>
+
+  <table>
+    <tr><th>Attribute</th><th>Type</th><th>What it is</th></tr>
+    <tr>
+      <td><code>request._activity_id</code></td>
+      <td><code>str (UUID)</code></td>
+      <td>Fresh UUID for every request. All activity log entries generated during this request share this ID.</td>
+    </tr>
+    <tr>
+      <td><code>request.active_company</code></td>
+      <td><code>Company | None</code></td>
+      <td>Decoded from the JWT token's <code>active_company</code> claim. <code>None</code> if the token has no company claim or no token is present.</td>
+    </tr>
+    <tr>
+      <td><code>request._impersonated_by</code></td>
+      <td><code>str | None</code></td>
+      <td>Username of the admin acting on behalf of another user. Taken from JWT claim <code>impersonated_by</code>.</td>
+    </tr>
+    <tr>
+      <td><code>request._cached_body</code></td>
+      <td><code>bytes</code></td>
+      <td>Raw request body, cached so it can be read multiple times (middleware and views can both read it).</td>
+    </tr>
+  </table>
+
+  <h3>RequestResponseLoggingMiddleware</h3>
+  <p>Runs after the response. For every non-health-check request:</p>
+  <ul>
+    <li>Logs request and response to Celery (<code>log_in_background</code>).</li>
+    <li>On error responses (4xx/5xx) generates an <code>error_id</code> UUID, saves a failed-action activity log, and sends a Slack alert.</li>
+    <li>Auth endpoints (<code>/api/auth/</code>, token refresh, password reset) — logged on error as <code>type=auth</code> with <code>changes={}</code> (body stripped to avoid recording credentials).</li>
+  </ul>
+
+  <h3>get_current_request()</h3>
+  <p>Thread-local accessor. Returns the current HTTP request from anywhere in the codebase — signals, helpers, services — without passing it explicitly through call chains.</p>
+  <pre><code><span class="kw">from</span> main.middleware <span class="kw">import</span> get_current_request
+
+request = get_current_request()  <span class="comment"># None outside an HTTP request context</span></code></pre>
+  <div class="callout info">
+    <strong>Rule:</strong> use <code>get_current_request()</code> instead of threading the request through function arguments. If it returns <code>None</code>, you're in a background context — use <code>system_actor</code> for attribution.
+  </div>
+
+  <!-- ===== VIEWSETS ===== -->
+  <h2 id="viewsets">ViewSets &amp; Generic Views</h2>
+  <p>All views extend the classes in <code>utils/generic_views.py</code>, which wrap DRF generics with consistent response building and automatic company scoping.</p>
+
+  <table>
+    <tr>
+      <th>Class</th>
+      <th>HTTP Methods</th>
+      <th>Use when</th>
+    </tr>
+    <tr>
+      <td><code>ModelViewSet</code></td>
+      <td>GET list · GET detail · POST · PATCH · DELETE</td>
+      <td>Full CRUD resource with a router</td>
+    </tr>
+    <tr>
+      <td><code>ListCreateAPIView</code></td>
+      <td>GET · POST</td>
+      <td>Collection endpoint (no detail/update/delete)</td>
+    </tr>
+    <tr>
+      <td><code>ListAPIView</code></td>
+      <td>GET</td>
+      <td>Read-only list</td>
+    </tr>
+    <tr>
+      <td><code>RetrieveAPIView</code></td>
+      <td>GET (single object)</td>
+      <td>Read-only detail</td>
+    </tr>
+    <tr>
+      <td><code>CreateAPIView</code></td>
+      <td>POST</td>
+      <td>Create-only endpoint</td>
+    </tr>
+    <tr>
+      <td><code>UpdateAPIView</code></td>
+      <td>PATCH</td>
+      <td>Update-only endpoint</td>
+    </tr>
+    <tr>
+      <td><code>ListUpdateAPIView</code></td>
+      <td>GET · PATCH</td>
+      <td>List + partial update on a single URL</td>
+    </tr>
+  </table>
+
+  <h3>What these views do automatically</h3>
+  <ul>
+    <li>Return every response via <code>build_response()</code> in the standard envelope.</li>
+    <li>When <code>WithinCompanyScope</code> is present: filter list/retrieve/update/destroy to <code>request.active_company</code>, and inject <code>company = request.active_company</code> on create.</li>
+    <li>Validate query params through <code>query_serializer</code> and apply filters on list.</li>
+    <li>Activate pagination only when <code>?limit=</code> is in the query string.</li>
+  </ul>
+
+  <div class="callout info">
+    For anything outside these patterns — custom actions, complex multi-step logic — use a plain <code>APIView</code> and call <code>build_response()</code> manually.
+  </div>
+
+  <!-- ===== VIEWSET VARIABLES ===== -->
+  <h2 id="viewset-vars">ViewSet Variables</h2>
+
+  <table>
+    <tr>
+      <th>Variable</th>
+      <th></th>
+      <th>Purpose &amp; Notes</th>
+    </tr>
+    <tr>
+      <td><code>object_name</code></td>
+      <td><span class="tag tag-required">required</span></td>
+      <td>
+        Used in auto-generated response messages and the exception handler.<br>
+        <code>"Flight"</code> → <em>"Flight Successfully Fetched"</em>, <em>"Flight Not Found"</em>, <em>"Flight Failed To Create"</em>.<br>
+        <strong>Missing this causes AttributeError on 400/404 exceptions.</strong>
+      </td>
+    </tr>
+    <tr>
+      <td><code>queryset</code></td>
+      <td><span class="tag tag-required">required</span></td>
+      <td>
+        Base queryset. Do not pre-filter by company here — <code>WithinCompanyScope</code> handles that.
+      </td>
+    </tr>
+    <tr>
+      <td><code>serializer_class</code></td>
+      <td><span class="tag tag-required">required</span></td>
+      <td>DRF serializer for input validation and output serialization.</td>
+    </tr>
+    <tr>
+      <td><code>permission_classes</code></td>
+      <td><span class="tag tag-optional">optional</span></td>
+      <td>
+        Include <code>WithinCompanyScope</code> to enable company scoping. The view checks for its presence at runtime — it does nothing unless listed here.
+      </td>
+    </tr>
+    <tr>
+      <td><code>query_serializer</code></td>
+      <td><span class="tag tag-optional">optional</span></td>
+      <td>
+        Serializer class for query params. Validated on every list request. Without <code>advanced_filtering</code>, each validated field is applied directly as <code>queryset.filter(field=value)</code>. With <code>advanced_filtering</code>, you control the logic yourself.
+      </td>
+    </tr>
+    <tr>
+      <td><code>pagination_class</code></td>
+      <td><span class="tag tag-optional">optional</span></td>
+      <td>
+        Set to <code>CustomPagination</code> to enable pagination. It only activates when <code>?limit=</code> is present — without it, all results are returned unpaginated.
+      </td>
+    </tr>
+    <tr>
+      <td><code>tab_count_data</code></td>
+      <td><span class="tag tag-optional">optional</span></td>
+      <td>
+        Method <code>(self, queryset) → dict</code>. The queryset passed here has the active-tab filter excluded (see <code>tab_fields</code>). Result appears in every list response under <code>data.tab_count_data</code>.
+      </td>
+    </tr>
+    <tr>
+      <td><code>tab_fields</code></td>
+      <td><span class="tag tag-optional">optional</span></td>
+      <td>
+        List of query-param field names to strip before computing tab counts. Prevents the selected tab from collapsing all other counts to zero.
+      </td>
+    </tr>
+  </table>
+
+  <!-- ===== COMPLETE EXAMPLE ===== -->
+  <h2 id="viewset-example">Complete Example</h2>
+  <pre><code><span class="kw">from</span> utils.generic_views <span class="kw">import</span> ModelViewSet
+<span class="kw">from</span> utils.permissions <span class="kw">import</span> WithinCompanyScope
+<span class="kw">from</span> main.helper.paginationHelper <span class="kw">import</span> CustomPagination
+<span class="kw">from</span> rest_framework <span class="kw">import</span> serializers
+
+<span class="kw">class</span> <span class="fn">FlightQuerySerializer</span>(serializers.Serializer):
+    status    = serializers.CharField(required=<span class="kw">False</span>)
+    airline   = serializers.IntegerField(required=<span class="kw">False</span>)
+    search    = serializers.CharField(required=<span class="kw">False</span>)
+    date_from = serializers.DateField(required=<span class="kw">False</span>)
+
+<span class="kw">class</span> <span class="fn">FlightViewSet</span>(ModelViewSet):
+    object_name      = <span class="str">"Flight"</span>
+    queryset         = Flight.objects.all()
+    serializer_class = FlightSerializer
+    permission_classes = [WithinCompanyScope]
+    pagination_class = CustomPagination
+    query_serializer = FlightQuerySerializer
+    tab_fields       = [<span class="str">"status"</span>]  <span class="comment"># excluded when counting tabs</span>
+
+    <span class="kw">def</span> <span class="fn">advanced_filtering</span>(self, queryset, query_serializer, ignore_fields=<span class="kw">None</span>):
+        data = query_serializer.validated_data
+        ignore = ignore_fields <span class="kw">or</span> []
+        <span class="kw">if</span> data.get(<span class="str">"status"</span>) <span class="kw">and</span> <span class="str">"status"</span> <span class="kw">not in</span> ignore:
+            queryset = queryset.filter(status=data[<span class="str">"status"</span>])
+        <span class="kw">if</span> data.get(<span class="str">"airline"</span>):
+            queryset = queryset.filter(airline_id=data[<span class="str">"airline"</span>])
+        <span class="kw">if</span> data.get(<span class="str">"search"</span>):
+            queryset = queryset.filter(flight_no__icontains=data[<span class="str">"search"</span>])
+        <span class="kw">if</span> data.get(<span class="str">"date_from"</span>):
+            queryset = queryset.filter(departure_date__gte=data[<span class="str">"date_from"</span>])
+        <span class="kw">return</span> queryset
+
+    <span class="kw">def</span> <span class="fn">tab_count_data</span>(self, queryset):
+        <span class="kw">return</span> {
+            <span class="str">"all"</span>:    queryset.count(),
+            <span class="str">"active"</span>: queryset.filter(status=<span class="str">"active"</span>).count(),
+            <span class="str">"closed"</span>: queryset.filter(status=<span class="str">"closed"</span>).count(),
+        }</code></pre>
+
+  <p>What this gives you for free:</p>
+  <ul>
+    <li><strong>List</strong> — company-scoped, paginated if <code>?limit=</code> given, filtered by any query param, tab counts in response.</li>
+    <li><strong>Create</strong> — <code>company</code> injected automatically from <code>request.active_company</code>.</li>
+    <li><strong>Retrieve / Update / Destroy</strong> — company-scoped (can't access another company's objects).</li>
+    <li><strong>All responses</strong> — consistent <code>build_response</code> envelope with <code>object_name</code>-based messages.</li>
+  </ul>
+
+  <!-- ===== FILTERING ===== -->
+  <h2 id="filtering">Filtering &amp; Tabs</h2>
+
+  <h3>Basic filtering (no advanced_filtering)</h3>
+  <p>When <code>query_serializer</code> is set but <code>advanced_filtering</code> is not, every validated field is applied directly as <code>queryset.filter(**validated_data)</code>. Only use this when every field maps 1:1 to a model field with an exact match.</p>
+  <pre><code><span class="kw">class</span> <span class="fn">InvoiceQuerySerializer</span>(serializers.Serializer):
+    payment_status = serializers.CharField(required=<span class="kw">False</span>)
+    company        = serializers.IntegerField(required=<span class="kw">False</span>)
+<span class="comment"># GET /invoices/?payment_status=paid  →  .filter(payment_status="paid")</span></code></pre>
+
+  <h3>Advanced filtering</h3>
+  <p>Use when you need non-exact matches, OR conditions, range filters, or annotations. The view calls <code>advanced_filtering(queryset, query_serializer)</code> instead of the auto-filter path.</p>
+  <pre><code><span class="kw">def</span> <span class="fn">advanced_filtering</span>(self, queryset, query_serializer, ignore_fields=<span class="kw">None</span>):
+    data = query_serializer.validated_data
+    ignore = ignore_fields <span class="kw">or</span> []
+
+    <span class="comment"># Tab field — skip when computing counts for other tabs</span>
+    <span class="kw">if</span> data.get(<span class="str">"status"</span>) <span class="kw">and</span> <span class="str">"status"</span> <span class="kw">not in</span> ignore:
+        queryset = queryset.filter(status=data[<span class="str">"status"</span>])
+
+    <span class="comment"># Range filter</span>
+    <span class="kw">if</span> data.get(<span class="str">"date_from"</span>):
+        queryset = queryset.filter(dep_date__gte=data[<span class="str">"date_from"</span>])
+    <span class="kw">if</span> data.get(<span class="str">"date_to"</span>):
+        queryset = queryset.filter(dep_date__lte=data[<span class="str">"date_to"</span>])
+
+    <span class="comment"># OR / icontains search</span>
+    <span class="kw">if</span> data.get(<span class="str">"search"</span>):
+        queryset = queryset.filter(
+            Q(flight_no__icontains=data[<span class="str">"search"</span>]) |
+            Q(operator__name__icontains=data[<span class="str">"search"</span>])
+        )
+    <span class="kw">return</span> queryset</code></pre>
+
+  <h3>How tab counts work</h3>
+  <p>When <code>tab_count_data</code> and <code>tab_fields</code> are both set, the framework calls:</p>
+  <pre><code><span class="comment"># count queryset = advanced_filtering(base_qs, params, ignore_fields=tab_fields)</span>
+<span class="comment"># The tab filter is stripped so counts show all tabs, not just the active one</span>
+tab_fields = [<span class="str">"status"</span>]
+
+<span class="kw">def</span> <span class="fn">tab_count_data</span>(self, queryset):   <span class="comment"># queryset here has no status filter</span>
+    <span class="kw">return</span> {
+        <span class="str">"all"</span>:    queryset.count(),
+        <span class="str">"open"</span>:   queryset.filter(status=<span class="str">"open"</span>).count(),
+        <span class="str">"closed"</span>: queryset.filter(status=<span class="str">"closed"</span>).count(),
+    }</code></pre>
+  <p>Tab counts appear in every list response — paginated or not — under <code>data.tab_count_data</code>.</p>
+
+  <!-- ===== BARE VIEWS ===== -->
+  <h2 id="bare-views">Bare API Views</h2>
+  <p>Use plain DRF <code>APIView</code> for custom actions, multi-step operations, or anything the generic views can't express. You are responsible for calling <code>build_response()</code>.</p>
+  <pre><code><span class="kw">from</span> rest_framework.views <span class="kw">import</span> APIView
+<span class="kw">from</span> rest_framework <span class="kw">import</span> status
+<span class="kw">from</span> main.helper.responseHelper <span class="kw">import</span> build_response
+
+<span class="kw">class</span> <span class="fn">VoidInvoiceView</span>(APIView):
+    object_name = <span class="str">"Invoice"</span>   <span class="comment"># still required — exception handler uses it</span>
+
+    <span class="kw">def</span> <span class="fn">post</span>(self, request, pk):
+        invoice = get_object_or_404(Invoice, pk=pk)
+        <span class="kw">if</span> invoice.status == <span class="str">"voided"</span>:
+            <span class="kw">return</span> build_response(
+                <span class="str">"failed"</span>,
+                error=<span class="str">"Invoice is already voided"</span>,
+                message=<span class="str">"Invoice Failed To Void"</span>,
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+        invoice.void()
+        <span class="kw">return</span> build_response(
+            <span class="str">"success"</span>,
+            data=InvoiceSerializer(invoice).data,
+            message=<span class="str">"Invoice Voided Successfully"</span>,
+            status_code=status.HTTP_200_OK,
+        )</code></pre>
+
+  <h3>Manual serializer validation in bare views</h3>
+  <p>Generic views use <code>serializer.is_valid(raise_exception=True)</code> — the exception handler formats the errors automatically. Bare <code>APIView</code>s often call <code>is_valid()</code> without raising and handle errors manually. Use the parsers from <code>main/helper/exceptionParser.py</code> to format them for <code>build_response</code>.</p>
+
+  <table>
+    <tr><th>Function</th><th>Input</th><th>Output</th><th>Use when</th></tr>
+    <tr>
+      <td><code>exception_list_parser</code></td>
+      <td><code>serializer.errors.items()</code></td>
+      <td><code>{"field": "first error message", ...}</code></td>
+      <td>Serializer validation failed — convert DRF's nested error lists to a flat dict for <code>errors=</code></td>
+    </tr>
+    <tr>
+      <td><code>exception_parser</code></td>
+      <td><code>str(exception)</code></td>
+      <td><code>{"field": "message"}</code> or the raw string</td>
+      <td>Caught an exception whose string representation looks like a Django <code>ErrorDetail</code> dict — tries to parse it, falls back to the raw string</td>
+    </tr>
+  </table>
+
+  <pre><code><span class="kw">from</span> main.helper.exceptionParser <span class="kw">import</span> exception_list_parser, exception_parser
+
+<span class="kw">class</span> <span class="fn">CreateFlightView</span>(APIView):
+    object_name = <span class="str">"Flight"</span>
+
+    <span class="kw">def</span> <span class="fn">post</span>(self, request):
+        serializer = FlightSerializer(data=request.data)
+        <span class="kw">if not</span> serializer.is_valid():
+            <span class="kw">return</span> build_response(
+                <span class="str">"failed"</span>,
+                errors=exception_list_parser(serializer.errors.items()),
+                message=<span class="str">"Flight Failed To Create"</span>,
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+        <span class="kw">try</span>:
+            instance = serializer.save()
+        <span class="kw">except</span> Exception <span class="kw">as</span> e:
+            <span class="kw">return</span> build_response(
+                <span class="str">"failed"</span>,
+                error=exception_parser(str(e)),   <span class="comment"># parses ErrorDetail string if possible</span>
+                message=<span class="str">"Flight Failed To Create"</span>,
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+        <span class="kw">return</span> build_response(
+            <span class="str">"success"</span>,
+            data=FlightSerializer(instance).data,
+            message=<span class="str">"Flight Successfully Created"</span>,
+            status_code=status.HTTP_201_CREATED,
+        )</code></pre>
+
+  <div class="callout info">
+    If you use <code>serializer.is_valid(raise_exception=True)</code> instead, you don't need these parsers — the global exception handler calls <code>format_error_details</code> automatically and builds the response for you.
+  </div>
+
+  <!-- ===== BUILD RESPONSE ===== -->
+  <h2 id="build-response">build_response</h2>
+  <p>File: <code>main/helper/responseHelper.py</code>. The single function all views use to build HTTP responses. Never return a raw DRF <code>Response()</code> in a view.</p>
+
+  <pre><code><span class="kw">from</span> main.helper.responseHelper <span class="kw">import</span> build_response
+
+build_response(
+    status      = <span class="str">"success"</span> | <span class="str">"failed"</span>,   <span class="comment"># required</span>
+    message     = <span class="str">"..."</span>,                   <span class="comment"># required</span>
+    status_code = status.HTTP_200_OK,       <span class="comment"># required — DRF status constant</span>
+    data        = ...,                      <span class="comment"># success only</span>
+    error       = ...,                      <span class="comment"># failed only — single string/dict</span>
+    errors      = ...,                      <span class="comment"># failed only — per-field dict</span>
+    tab_count_data = {},                    <span class="comment"># optional — appended to data</span>
+    extra_data     = {},                    <span class="comment"># optional — appended to data</span>
+)</code></pre>
+
+  <table>
+    <tr><th>Parameter</th><th>When</th><th>Notes</th></tr>
+    <tr><td><code>status</code></td><td>Always</td><td><code>"success"</code> or <code>"failed"</code>. Any other value raises an exception.</td></tr>
+    <tr><td><code>message</code></td><td>Always</td><td>Human-readable. Shown to users in some contexts. Must be provided or the function throws.</td></tr>
+    <tr><td><code>status_code</code></td><td>Always</td><td>Use <code>status.HTTP_*</code> constants from DRF. Required or the function throws.</td></tr>
+    <tr><td><code>data</code></td><td>Success</td><td>Serialized payload. Wrapped inside <code>data.result</code> in the response body.</td></tr>
+    <tr><td><code>error</code></td><td>Failed</td><td>A single error — string or dict. Use for top-level, non-field errors (e.g. "Invoice already voided", gRPC failure, business rule violation).</td></tr>
+    <tr><td><code>errors</code></td><td>Failed</td><td>Per-field validation errors from a serializer. Dict of <code>{ field: "message" }</code>. The exception handler populates this automatically for 400s — you rarely set it manually.</td></tr>
+    <tr><td><code>tab_count_data</code></td><td>Optional</td><td>Dict merged into <code>data</code> alongside <code>result</code>.</td></tr>
+    <tr><td><code>extra_data</code></td><td>Optional</td><td>Arbitrary dict merged into <code>data</code>. Use for metadata alongside the main payload.</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>error vs errors:</strong> <code>error</code> = one thing went wrong. <code>errors</code> = multiple fields failed validation. If neither is passed on a failed response, the function raises an exception.
+  </div>
+
+  <h3>Success response</h3>
+  <div class="rbox">
+{<br>
+&nbsp;&nbsp;<span class="k">"status"</span>: <span class="s">"success"</span>,<br>
+&nbsp;&nbsp;<span class="k">"message"</span>: <span class="s">"Flight Successfully Fetched"</span>,<br>
+&nbsp;&nbsp;<span class="k">"data"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"result"</span>: <span class="m">[ ... ]</span>, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// your serialized payload</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"tab_count_data"</span>: <span class="m">{ "all": 42 }</span> &nbsp;<span class="c">// if tab_count_data was set</span><br>
+&nbsp;&nbsp;}<br>
+}
+  </div>
+
+  <h3>Failed response — single error</h3>
+  <div class="rbox">
+{<br>
+&nbsp;&nbsp;<span class="k">"status"</span>: <span class="s">"failed"</span>,<br>
+&nbsp;&nbsp;<span class="k">"message"</span>: <span class="s">"Invoice Failed To Void"</span>,<br>
+&nbsp;&nbsp;<span class="k">"error"</span>: <span class="s">"Invoice is already voided"</span>,<br>
+&nbsp;&nbsp;<span class="k">"errors"</span>: <span class="m">null</span><br>
+}
+  </div>
+
+  <h3>Failed response — field validation errors</h3>
+  <div class="rbox">
+{<br>
+&nbsp;&nbsp;<span class="k">"status"</span>: <span class="s">"failed"</span>,<br>
+&nbsp;&nbsp;<span class="k">"message"</span>: <span class="s">"Flight Failed To Create"</span>,<br>
+&nbsp;&nbsp;<span class="k">"error"</span>: <span class="m">null</span>,<br>
+&nbsp;&nbsp;<span class="k">"errors"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"dep_date"</span>: <span class="s">"This field is required."</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"airline"</span>: <span class="s">"Please select a valid option."</span><br>
+&nbsp;&nbsp;}<br>
+}
+  </div>
+
+  <!-- ===== PAGINATION ===== -->
+  <h2 id="pagination">Pagination</h2>
+  <p>Class: <code>CustomPagination</code> in <code>main/helper/paginationHelper.py</code>.</p>
+
+  <p>Pagination is <strong>opt-in per request</strong>. Set <code>pagination_class = CustomPagination</code> on the view to enable it. It only activates when <code>?limit=</code> is present — without it, the full queryset is returned as a flat list.</p>
+
+  <table>
+    <tr><th>Query Param</th><th>Purpose</th><th>Default</th></tr>
+    <tr><td><code>?limit=25</code></td><td>Items per page. Triggers pagination.</td><td>—</td></tr>
+    <tr><td><code>?page=2</code></td><td>Page number.</td><td>1</td></tr>
+  </table>
+
+  <p>If <code>?page=</code> is out of range, an empty list is returned (no 404 is raised).</p>
+
+  <div class="two-col">
+    <div>
+      <div class="label-row"><span class="label-sm">Without ?limit</span></div>
+      <pre><code><span class="comment">// Returns all results</span>
+{
+  <span class="str">"status"</span>: <span class="str">"success"</span>,
+  <span class="str">"message"</span>: <span class="str">"..."</span>,
+  <span class="str">"data"</span>: {
+    <span class="str">"result"</span>: [ ... ]
+  }
+}</code></pre>
+    </div>
+    <div>
+      <div class="label-row"><span class="label-sm">With ?limit=25</span></div>
+      <pre><code><span class="comment">// Paginated</span>
+{
+  <span class="str">"status"</span>: <span class="str">"success"</span>,
+  <span class="str">"message"</span>: <span class="str">"..."</span>,
+  <span class="str">"data"</span>: {
+    <span class="str">"result"</span>: [ ... ],
+    <span class="str">"current_page"</span>: 1,
+    <span class="str">"total_page"</span>: 5,
+    <span class="str">"total_object"</span>: 120,
+    <span class="str">"next"</span>: 2,
+    <span class="str">"previous"</span>: null
+  }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== EXCEPTION HANDLER ===== -->
+  <h2 id="exception-handler">Exception Handler</h2>
+  <p>Registered in <code>REST_FRAMEWORK.EXCEPTION_HANDLER → main.middleware.custom_exception_handler</code>.</p>
+  <p>All DRF exceptions are caught globally and transformed into the <code>build_response</code> envelope. Views do not need to catch or format these themselves.</p>
+
+  <table>
+    <tr><th>Status</th><th>Triggered by</th><th>Response shape</th></tr>
+    <tr>
+      <td><span class="pill blue">400</span></td>
+      <td>Serializer <code>raise_exception=True</code>, or any DRF <code>ValidationError</code></td>
+      <td>
+        <strong>Field errors:</strong> <code>errors</code> dict keyed by field name (via <code>format_error_details</code> which recursively flattens list-wrapped messages to strings).<br>
+        <strong>Non-field / list error:</strong> <code>error</code> string.<br>
+        Message: <code>"{object_name} Failed To {Create|Update|Fetch|Delete}"</code>
+      </td>
+    </tr>
+    <tr>
+      <td><span class="pill">401</span></td>
+      <td>JWT token missing, expired, or invalid</td>
+      <td><code>message: "Authentication Failed"</code>, <code>error</code>: token detail string</td>
+    </tr>
+    <tr>
+      <td><span class="pill red">403</span></td>
+      <td>Permission class denied access</td>
+      <td><code>message: "Access Denied"</code>, <code>error</code>: DRF detail string</td>
+    </tr>
+    <tr>
+      <td><span class="pill">404</span></td>
+      <td><code>get_object_or_404</code>, or DRF <code>NotFound</code></td>
+      <td><code>error: "{object_name} Not Found"</code>, <code>message: "{object_name} Failed To {method}"</code></td>
+    </tr>
+    <tr>
+      <td><span class="pill red">503</span></td>
+      <td><code>raise GrpcServiceUnavailableError()</code></td>
+      <td><code>error: "BAS service unavailable"</code>, message: service temporarily unavailable</td>
+    </tr>
+  </table>
+
+  <div class="callout info">
+    <strong>format_error_details</strong> flattens nested serializer errors. DRF returns <code>{"dep_date": ["This field is required."]}</code> — the handler converts it to <code>{"dep_date": "This field is required."}</code>. Nested serializer errors are recursively flattened the same way.
+  </div>
+
+  <h3>What a 400 field-error response looks like</h3>
+  <div class="rbox">
+{<br>
+&nbsp;&nbsp;<span class="k">"status"</span>: <span class="s">"failed"</span>,<br>
+&nbsp;&nbsp;<span class="k">"message"</span>: <span class="s">"Flight Failed To Create"</span>,<br>
+&nbsp;&nbsp;<span class="k">"error"</span>: <span class="m">null</span>,<br>
+&nbsp;&nbsp;<span class="k">"errors"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"dep_date"</span>: <span class="s">"This field is required."</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"airline"</span>: <span class="s">"Please select a valid option."</span><br>
+&nbsp;&nbsp;}<br>
+}
+  </div>
+
+  <h3>What a 400 non-field error looks like</h3>
+  <div class="rbox">
+{<br>
+&nbsp;&nbsp;<span class="k">"status"</span>: <span class="s">"failed"</span>,<br>
+&nbsp;&nbsp;<span class="k">"message"</span>: <span class="s">"Invoice Failed To Create"</span>,<br>
+&nbsp;&nbsp;<span class="k">"error"</span>: <span class="s">"Flights from different companies cannot be on the same invoice."</span>,<br>
+&nbsp;&nbsp;<span class="k">"errors"</span>: <span class="m">null</span><br>
+}
+  </div>
+
+  <div class="callout">
+    <strong>object_name is required on every view</strong>, including plain <code>APIView</code>. The 400 and 404 handlers read <code>view.object_name</code> — if it's missing you get an <code>AttributeError</code> instead of a clean error response.
+  </div>
+
+  <!-- ===== SOFT DELETE ===== -->
+  <h2 id="soft-delete">Soft Delete</h2>
+  <p>File: <code>utils/custom.py</code>. Rows are never physically removed. Deletion sets <code>deleted_at</code> to the current time. The default manager hides deleted rows transparently.</p>
+
+  <table>
+    <tr><th>Class</th><th>Provides</th></tr>
+    <tr><td><code>SoftDeletableModel</code></td><td><code>deleted_at</code> field, two managers, overridden <code>.delete()</code></td></tr>
+    <tr><td><code>TimeStampedModel</code></td><td><code>created_at</code> (immutable), <code>updated_at</code> (auto on update)</td></tr>
+    <tr><td><code>TimeStampedSoftDeletableModel</code></td><td>Both — use this as the base for most models</td></tr>
+  </table>
+
+  <h3>deleted_at sentinel value</h3>
+  <p>Active rows use a far-future date as a sentinel instead of <code>NULL</code>. This allows indexing and prevents NULL comparison issues in MySQL.</p>
+  <table>
+    <tr><th>State</th><th>deleted_at value</th></tr>
+    <tr><td><span class="pill green">Active</span></td><td><code>3000-01-01 00:00:00 UTC</code> — the <code>FUTURE_DATE</code> constant</td></tr>
+    <tr><td><span class="pill red">Deleted</span></td><td>Actual timestamp of when <code>.delete()</code> was called</td></tr>
+  </table>
+
+  <h3>Managers</h3>
+  <table>
+    <tr><th>Manager</th><th>Returns</th><th>Use when</th></tr>
+    <tr>
+      <td><code>Model.objects</code></td>
+      <td>Only rows where <code>deleted_at = FUTURE_DATE</code></td>
+      <td>All normal queries — this is the default</td>
+    </tr>
+    <tr>
+      <td><code>Model.all_objects</code></td>
+      <td>All rows, including deleted</td>
+      <td>Audit queries, admin, restoring deleted records</td>
+    </tr>
+  </table>
+
+  <h3>Deleting</h3>
+  <pre><code><span class="comment"># Soft delete (default) — sets deleted_at, fires post_save signal</span>
+instance.delete()
+
+<span class="comment"># Hard delete — physically removes the row, fires post_delete signal</span>
+instance.delete(soft=<span class="kw">False</span>)
+
+<span class="comment"># Access deleted items</span>
+Flight.all_objects.filter(deleted_at__lt=FUTURE_DATE)  <span class="comment"># all deleted flights</span>
+Flight.all_objects.get(pk=42)                           <span class="comment"># specific row, alive or dead</span></code></pre>
+
+  <div class="callout danger">
+    <strong>Queryset .delete() bypasses instance .delete().</strong> <code>Flight.objects.filter(...).delete()</code> runs a bulk SQL <code>UPDATE deleted_at = now()</code>. It fires no <code>pre_save</code> / <code>post_save</code> signals. No activity logs are written. If you need an audit trail, iterate and call <code>.delete()</code> per instance, or log manually after the bulk update.
+  </div>
+
+  <!-- ===== TIMESTAMPS ===== -->
+  <h2 id="timestamps">Timestamps</h2>
+  <table>
+    <tr><th>Field</th><th>Behaviour</th></tr>
+    <tr>
+      <td><code>created_at</code></td>
+      <td>Set to <code>timezone.now()</code> on first save. Never changed thereafter.</td>
+    </tr>
+    <tr>
+      <td><code>updated_at</code></td>
+      <td>
+        <code>null</code> after the first save (create). Set to <code>timezone.now()</code> on every subsequent save. Check <code>updated_at is None</code> to know if a record has never been edited.
+      </td>
+    </tr>
+  </table>
+
+  <!-- ===== COMPANY SETTINGS ===== -->
+  <h2 id="company-settings">Company Settings</h2>
+  <p>File: <code>company/setting_keys.py</code>. Per-company key/value configuration. All settings are seeded automatically when a new company is created.</p>
+
+  <h3>How it works</h3>
+  <ol style="padding-left:20px; margin-bottom:12px;">
+    <li style="margin-bottom:6px;">A new <code>Company</code> is saved → <code>post_save</code> fires <code>populate_company_data_upon_company_creation</code>.</li>
+    <li style="margin-bottom:6px;">That signal calls <code>seed_company_settings(company)</code>.</li>
+    <li style="margin-bottom:6px;"><code>seed_company_settings</code> iterates <code>get_default_settings()</code> and runs <code>CompanySettings.objects.get_or_create(title=key, company=company, defaults=...)</code> for every entry.</li>
+    <li>The company now has a <code>CompanySettings</code> row for every registered key, with its default value.</li>
+  </ol>
+
+  <h3>Adding a new setting</h3>
+  <p>Two edits, both in <code>company/setting_keys.py</code>:</p>
+  <pre><code><span class="comment"># 1. Add the key to the enum</span>
+<span class="kw">class</span> <span class="fn">CompanySettingKey</span>(str, Enum):
+    ...
+    MY_NEW_SETTING = <span class="str">"my_new_setting"</span>
+
+<span class="comment"># 2. Add a default entry in get_default_settings()</span>
+<span class="kw">def</span> <span class="fn">get_default_settings</span>(company):
+    <span class="kw">return</span> [
+        ...
+        {
+            <span class="str">"title"</span>: CompanySettingKey.MY_NEW_SETTING,
+            <span class="str">"defaults"</span>: {
+                <span class="str">"value_type"</span>: CompanySettings.GeneralSettingsTypes.text.value,
+                <span class="str">"type"</span>: CompanySettings.CompanySettingsTypes.general_settings.value,
+                <span class="str">"value_text"</span>: <span class="str">"default_value"</span>,
+            },
+        },
+    ]</code></pre>
+
+  <div class="callout">
+    <strong>Seeding is idempotent and also runs during startup.</strong> The app invokes <code>python manage.py seeder company_settings</code> on boot, and the company <em>creation</em> signal also calls <code>seed_company_settings(company)</code>. Because it uses <code>get_or_create</code>, re-running it is safe and only fills in missing settings for each company.
+  </div>
+
+  <h3>Reading a setting</h3>
+  <pre><code><span class="kw">from</span> company.setting_keys <span class="kw">import</span> CompanySettingKey, get_company_setting
+
+setting = get_company_setting(company, CompanySettingKey.INVOICE_NUMBER_PREFIX)
+<span class="kw">if</span> setting:
+    prefix = setting.value_text   <span class="comment"># e.g. "INV-"</span></code></pre>
+
+  <p><code>get_company_setting</code> returns a <code>CompanySettings</code> instance or <code>None</code>. Always guard against <code>None</code> — the setting may not exist for older companies that predate the key.</p>
+  <!-- ===== ACTIVITY LOG ===== -->
+  <h2 id="activity-log">Activity Log Model</h2>
+  <p>File: <code>activityLog/models.py</code>. Every meaningful change to tracked models is recorded here. Extends <code>TimeStampedSoftDeletableModel</code>.</p>
+
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+    <tr><td><code>type</code></td><td>choice</td><td><code>create</code> · <code>update</code> · <code>delete</code> · <code>auth</code></td></tr>
+    <tr><td><code>status</code></td><td>choice</td><td><code>success</code> · <code>failed</code></td></tr>
+    <tr><td><code>model</code></td><td>string</td><td>Python class name, e.g. <code>"Flight"</code></td></tr>
+    <tr><td><code>object</code></td><td>int</td><td>PK of the affected row</td></tr>
+    <tr><td><code>changes</code></td><td>JSON</td><td>Diff of what changed. See Changes Format below.</td></tr>
+    <tr><td><code>user_name</code></td><td>string</td><td>Username, or <em>"System · &lt;source&gt;"</em> for automated writes.</td></tr>
+    <tr><td><code>impersonated_by</code></td><td>string</td><td>Admin username when acting on behalf of a user.</td></tr>
+    <tr><td><code>ip</code></td><td>ip</td><td>Client IP from request.</td></tr>
+    <tr><td><code>email</code></td><td>email</td><td>User's email at time of action.</td></tr>
+    <tr><td><code>agent_info</code></td><td>string</td><td><code>User-Agent</code> header, truncated to 255 chars.</td></tr>
+    <tr><td><code>activity_id</code></td><td>UUID</td><td>Groups all log entries from the same HTTP request / task.</td></tr>
+    <tr><td><code>error_id</code></td><td>UUID</td><td>Links failed-action log entries to the corresponding Slack alert.</td></tr>
+    <tr><td><code>related_object_id</code></td><td>int</td><td>Parent invoice ID for <code>InvoiceItem</code> and <code>InvoicePayment</code> rows.</td></tr>
+    <tr><td><code>company</code></td><td>FK</td><td>Company the action was performed under.</td></tr>
+  </table>
+
+  <!-- ===== CHANGES FORMAT ===== -->
+  <h2 id="changes-format">Changes Format</h2>
+  <p>The <code>changes</code> JSON field records what changed in a save. The diff is computed by <code>field_changes()</code> in <code>utils/signals.py</code>.</p>
+
+  <h3>Standard field diff</h3>
+  <div class="rbox">
+{<br>
+&nbsp;&nbsp;<span class="k">"status"</span>:   { <span class="k">"from"</span>: <span class="s">"open"</span>,  <span class="k">"to"</span>: <span class="s">"closed"</span> },<br>
+&nbsp;&nbsp;<span class="k">"dep_date"</span>: { <span class="k">"from"</span>: <span class="s">"2026-10-01"</span>, <span class="k">"to"</span>: <span class="s">"2026-10-02"</span> },<br>
+&nbsp;&nbsp;<span class="k">"payable_amount"</span>: { <span class="k">"from"</span>: <span class="n">1200.50</span>, <span class="k">"to"</span>: <span class="n">1350.00</span> }<br>
+}
+  </div>
+
+  <h3>FK field — includes human label</h3>
+  <p>When a foreign key changes, the diff includes both the PK and the display label (if the related model has <code>get_log_label()</code>).</p>
+  <div class="rbox">
+{<br>
+&nbsp;&nbsp;<span class="k">"airline"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"from"</span>: <span class="n">3</span>,  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// PK</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"to"</span>: <span class="n">7</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"from_label"</span>: <span class="s">"Emirates"</span>,  <span class="c">// from get_log_label()</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"to_label"</span>: <span class="s">"Qatar Airways"</span><br>
+&nbsp;&nbsp;}<br>
+}
+  </div>
+
+  <h3>Create — no "from" value</h3>
+  <div class="rbox">
+{<br>
+&nbsp;&nbsp;<span class="k">"status"</span>: { <span class="k">"from"</span>: <span class="m">null</span>, <span class="k">"to"</span>: <span class="s">"open"</span> },<br>
+&nbsp;&nbsp;<span class="k">"dep_date"</span>: { <span class="k">"from"</span>: <span class="m">null</span>, <span class="k">"to"</span>: <span class="s">"2026-10-01"</span> }<br>
+}
+  </div>
+
+  <h3>Special: flight_status snapshot</h3>
+  <p>Every Flight log entry includes a plain string <code>flight_status</code> snapshot — the status of the flight at the time of the save, e.g. <code>incomplete</code>, <code>ready_to_bill</code>, <code>billing</code>, or <code>billed</code>.</p>
+  <div class="rbox">
+{<br>
+&nbsp;&nbsp;<span class="k">"dep_date"</span>: { <span class="k">"from"</span>: <span class="s">"..."</span>, <span class="k">"to"</span>: <span class="s">"..."</span> },<br>
+&nbsp;&nbsp;<span class="k">"flight_status"</span>: <span class="s">"ready_to_bill"</span>  <span class="c">// snapshot at save time</span><br>
+}
+  </div>
+
+  <h3>Field type handling</h3>
+  <p>The diff engine normalises field values before comparing so the log is consistent:</p>
+  <table>
+    <tr><th>Field type</th><th>Stored as</th></tr>
+    <tr><td>DateTimeField</td><td>ISO 8601 string in UTC</td></tr>
+    <tr><td>DateField</td><td>ISO date string</td></tr>
+    <tr><td>DecimalField / FloatField</td><td>Float, rounded to 2 decimal places</td></tr>
+    <tr><td>ForeignKey / OneToOneField</td><td>PK integer (+ label if available)</td></tr>
+    <tr><td>FileField / ImageField</td><td>File URL string</td></tr>
+    <tr><td>PhoneNumberField</td><td>E.164 string</td></tr>
+  </table>
+
+  <!-- ===== SIGNALS ===== -->
+  <h2 id="signals">Auto-logging Signals</h2>
+  <p>Registered in <code>InvoiceConfig.ready()</code> for <strong>every model</strong> in the <code>invoice</code> app. The registration is automatic — no per-model setup needed.</p>
+
+  <table class="signal-row">
+    <tr><th>Signal</th><th>Handler</th><th>What it does</th></tr>
+    <tr>
+      <td>pre_save</td>
+      <td><code>capture_model_changes</code></td>
+      <td>
+        Before the save hits the DB, loads the existing row from the DB and diffs it against the incoming instance. For new rows, records all fields as "from null". Stashes the result in <code>instance._changes</code> and <code>instance._created</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>post_save</td>
+      <td><code>handle_model_changes</code></td>
+      <td>
+        Reads <code>instance._changes</code>. Decides action type: <code>create</code>, <code>update</code>, or <code>delete</code> (a soft-delete triggers <code>update</code> that gets re-classified as <code>delete</code> when <code>deleted_at</code> changed from FUTURE_DATE to now). Dispatches <code>save_activity_log.delay()</code> inside <code>transaction.on_commit</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>post_delete</td>
+      <td><code>handle_model_delete</code></td>
+      <td>Logs a hard delete. Only fires when <code>.delete(soft=False)</code> is used.</td>
+    </tr>
+  </table>
+
+  <div class="callout info">
+    Logs are dispatched asynchronously via Celery inside <code>transaction.on_commit</code> — they never block the request and are only written after the DB commit succeeds. If the transaction rolls back, no log is written.
+  </div>
+  <!-- ===== BULK OPS ===== -->
+  <h2 id="bulk-ops">Bulk Operations — Manual Logging Required</h2>
+
+  <div class="callout danger">
+    <strong>Signals do not fire for bulk operations.</strong> <code>queryset.update()</code>, <code>queryset.delete()</code>, and <code>queryset.bulk_create()</code> bypass Django's signal machinery entirely. No activity logs are written for those operations, and you must handle any required side effects explicitly.
+  </div>
+
+  <p>That applies to bulk data changes in general; for example, a bulk flight status update will not trigger the normal activity-log save path unless you log it yourself.</p>
+
+  <h3>How to log a bulk operation</h3>
+  <pre><code><span class="kw">from</span> django.db <span class="kw">import</span> transaction
+<span class="kw">from</span> main.tasks <span class="kw">import</span> save_activity_log
+<span class="kw">from</span> activityLog.models <span class="kw">import</span> ActivityLog
+
+<span class="comment"># Snapshot the pre-update state before the bulk write.</span>
+flight_ids = [42, 43, 44]
+flights = Flight.objects.filter(id__in=flight_ids, company=request.active_company)
+before = {flight.id: flight.status <span class="kw">for</span> flight <span class="kw">in</span> flights}
+
+<span class="comment"># Bulk update bypasses model-save signals.</span>
+Flight.objects.filter(id__in=flight_ids).update(status=Flight.FlightStatus.VOID)
+
+<span class="comment"># Emit one log per affected row, and only after the DB transaction commits.</span>
+<span class="kw">for</span> flight <span class="kw">in</span> flights:
+   changes = {
+       <span class="str">"status"</span>: {
+           <span class="str">"from"</span>: before[flight.id],
+           <span class="str">"to"</span>: Flight.FlightStatus.VOID.value,
+       }
+   }
+   per_log = {
+       <span class="str">"type"</span>: ActivityLog.ActionType.update,
+       <span class="str">"model"</span>: <span class="str">"Flight"</span>,
+       <span class="str">"object"</span>: flight.id,
+       <span class="str">"changes"</span>: changes,
+       <span class="str">"status"</span>: ActivityLog.ActionStatus.success,
+       <span class="str">"user_name"</span>: request.user.username,
+       <span class="str">"email"</span>: request.user.email,
+       <span class="str">"company_id"</span>: request.active_company.id,
+       <span class="str">"activity_id"</span>: request._activity_id,
+   }
+   transaction.on_commit(<span class="kw">lambda</span> d=per_log: save_activity_log.delay(**d))</code></pre>
+
+  <!-- ===== SYSTEM ACTOR ===== -->
+  <h2 id="system-actor">System Actor</h2>
+  <p>File: <code>utils/actor_context.py</code>.</p>
+  <p>When code runs outside an HTTP request (Celery tasks, management commands, background enrichments), there is no authenticated user. Without a declared actor, activity logs record an empty <code>user_name</code>. Use <code>system_actor</code> to attribute the logs to a named source.</p>
+
+  <h3>When to use it</h3>
+  <ul>
+    <li>Management commands that modify data (enrichment sweeps, import scripts).</li>
+    <li>Celery tasks that save models directly (not triggered by a user request).</li>
+    <li>Any code path where <code>get_current_request()</code> would return <code>None</code>.</li>
+  </ul>
+  <p>You do <strong>not</strong> need it for tasks dispatched from an HTTP request if you pass <code>activity_id=request._activity_id</code> — the request's user is resolved at dispatch time.</p>
+
+  <pre><code><span class="kw">from</span> utils.actor_context <span class="kw">import</span> system_actor, with_system_actor
+
+<span class="comment"># Context manager — wrap the block that saves models</span>
+<span class="kw">with</span> system_actor(<span class="str">"FR24"</span>):
+    flight.enrich_from_fr24()   <span class="comment"># any .save() inside logs as "System · FR24"</span>
+
+<span class="comment"># Decorator — for management command handle() methods</span>
+<span class="kw">@</span>with_system_actor(<span class="str">"FR24"</span>)
+<span class="kw">def</span> <span class="fn">handle</span>(self, *args, **options):
+    ...
+
+<span class="comment"># Nested actors compose into a readable chain</span>
+<span class="kw">with</span> system_actor(<span class="str">"FR24"</span>):        <span class="comment"># outer: FR24 enrichment</span>
+    <span class="kw">with</span> system_actor(<span class="str">"BAS"</span>):    <span class="comment"># inner: BAS fill called from within</span>
+        flight.save()             <span class="comment"># logs as "System · FR24 · BAS"</span></code></pre>
+
+  <table>
+    <tr><th>Scenario</th><th>user_name in log</th></tr>
+    <tr><td>Authenticated HTTP request</td><td>User's username</td></tr>
+    <tr><td>No request + <code>system_actor("FR24")</code></td><td><em>System · FR24</em></td></tr>
+    <tr><td>No request + no actor declared</td><td><em>System</em></td></tr>
+    <tr><td>Nested: FR24 → BAS</td><td><em>System · FR24 · BAS</em></td></tr>
+  </table>
+
+  <div class="callout info">
+    The actor is stored in a thread-local stack. It's always cleaned up in a <code>finally</code> block, so it's safe on Celery workers where threads are reused across tasks.
+  </div>
+
+  <!-- ===== ACTIVITY ID ===== -->
+  <h2 id="activity-id">Activity ID</h2>
+  <p>Every HTTP request gets a UUID assigned by <code>RequestMiddleware</code> as <code>request._activity_id</code>. All activity log entries generated during that request share this ID. This lets you reconstruct the complete audit trail for any user action — even when it touches multiple models.</p>
+
+  <h3>How to propagate it</h3>
+  <table>
+    <tr><th>Context</th><th>How</th></tr>
+    <tr>
+      <td>HTTP request → log</td>
+      <td>Automatic. Signal handlers read <code>get_current_request()._activity_id</code>.</td>
+    </tr>
+    <tr>
+      <td>HTTP request → Celery task</td>
+      <td>Pass <code>activity_id=request._activity_id</code> to <code>.delay()</code>. <code>ActivityTrackedTask</code> picks it up and sets it into thread-local before the task runs.</td>
+    </tr>
+    <tr>
+      <td>Management command</td>
+      <td>Extend <code>ActivityTrackedCommand</code> instead of <code>BaseCommand</code>. It generates a UUID for direct CLI invocations and inherits the caller's ID when called via <code>call_command()</code>.</td>
+    </tr>
+    <tr>
+      <td>Standalone Celery task (no HTTP origin)</td>
+      <td>Seeded automatically with the Celery task UUID by a <code>task_prerun</code> signal in <code>utils/task_context.py</code>.</td>
+    </tr>
+  </table>
+
+  <pre><code><span class="comment"># Dispatching a task — pass activity_id so the task's logs group with this request</span>
+some_task.delay(
+    invoice_id=invoice.id,
+    activity_id=request._activity_id,
+)
+
+<span class="comment"># Management command — activity_id handled automatically</span>
+<span class="kw">from</span> utils.management.base <span class="kw">import</span> ActivityTrackedCommand
+
+<span class="kw">class</span> <span class="fn">Command</span>(ActivityTrackedCommand):
+    <span class="kw">def</span> <span class="fn">handle</span>(self, *args, **options):
+        <span class="comment"># Any model saves here share the same activity_id</span>
+        ...</code></pre>
+
+  <h3>Log merging within a request</h3>
+  <p>Within a single request (or task), multiple saves to the <strong>same model instance</strong> produce <strong>one</strong> log row, not many. <code>save_activity_log</code> looks up an existing <code>(activity_id, model, object)</code> row before inserting. If one exists, the changes are merged.</p>
+
+  <p>Merge rules:</p>
+  <ul>
+    <li>The original <code>"from"</code> is preserved. Only <code>"to"</code> is updated to the latest value.</li>
+    <li>If a field returns to its original value (A → B → A), it is <strong>dropped</strong> from the diff — net-zero changes are invisible.</li>
+    <li>Without an <code>activity_id</code>, no merge happens — a new row is inserted every time.</li>
+  </ul>
+
+  <div class="callout info">
+    This is why passing <code>activity_id</code> matters beyond its use as a query key. Without it, a request that saves the same object twice produces two log entries with partial diffs. With it, the log shows the final net change as a single row.
+  </div>
+
+  <!-- ===== CELERY TASKS ===== -->
+  <h2 id="celery-tasks">Celery Tasks</h2>
+  <p>File: <code>utils/task_context.py</code>. Use <code>ActivityTrackedTask</code> as the base class for every Celery task. It propagates <code>activity_id</code> into thread-local before the task runs, so any model saves inside the task are attributed to the correct request or background job.</p>
+
+  <pre><code><span class="kw">from</span> celery <span class="kw">import</span> shared_task
+<span class="kw">from</span> utils.task_context <span class="kw">import</span> ActivityTrackedTask
+
+<span class="kw">@</span>shared_task(base=ActivityTrackedTask)
+<span class="kw">def</span> <span class="fn">process_invoice</span>(invoice_id, activity_id=<span class="kw">None</span>):
+    <span class="comment"># activity_id is popped by ActivityTrackedTask before this runs</span>
+    <span class="comment"># any model .save() inside here will carry the right activity_id</span>
+    ...</code></pre>
+
+  <div class="callout info">
+    <code>activity_id</code> does not need to be in the function signature — <code>ActivityTrackedTask.__call__</code> pops it from kwargs before invoking the function. Pass it at the call site: <code>process_invoice.delay(invoice_id=42, activity_id=request._activity_id)</code>.
+  </div>
+
+  <p>For standalone tasks with no HTTP origin, a <code>task_prerun</code> signal automatically seeds <code>activity_id</code> with the Celery task UUID, so logs are still grouped even without an explicit pass-through.</p>
+
+  <!-- ===== RPC ===== -->
+  <h2 id="rpc">RPC Layer</h2>
+  <p>When the app talks to an external service, keep the transport client behind a stable facade. Business code should depend on the facade, not the raw transport layer.</p>
+
+  <table>
+    <tr><th>Layer</th><th>Role</th><th>Contract</th></tr>
+    <tr>
+      <td><code>Transport client</code></td>
+      <td>Low-level RPC / gRPC / HTTP client</td>
+      <td>Handles connection setup, serialization, and retry/error plumbing. Keep this thin and generic.</td>
+    </tr>
+    <tr>
+      <td><code>Facade / handler</code></td>
+      <td>App-facing API</td>
+      <td>Normalises responses into plain dicts / app types and centralises error handling.</td>
+    </tr>
+    <tr>
+      <td><code>Service call site</code></td>
+      <td>Business logic</td>
+      <td>Imports the facade only. Never reach into the raw transport client directly.</td>
+    </tr>
+  </table>
+
+  <pre><code><span class="comment"># Correct</span>
+<span class="kw">from</span> rpc.remote_data_handler <span class="kw">import</span> get_client_by_id, get_aircraft_by_id
+
+<span class="comment"># Wrong — bypasses the facade and couples app code to transport details</span>
+<span class="kw">from</span> rpc.bas_rpc.grpc_client <span class="kw">import</span> BASService  <span class="comment"># ✗</span></code></pre>
+
+  <p>Keep a single error-handling path at the facade boundary. Translate transport exceptions into the app's normal error contract — whether that means returning <code>None</code>, raising a domain error, or converting a raw RPC error into a validation error.</p>
+
+  <div class="callout info">
+    <strong>Rule of thumb:</strong> the rest of the app should not know whether the external system is gRPC, HTTP, or REST. It only knows the facade contract.
+  </div>
+
+  <!-- ===== PERMISSIONS ===== -->
+  <h2 id="permissions">Permissions</h2>
+  <p>File: <code>utils/permissions.py</code>. Stack permissions in <code>permission_classes</code> — all must pass.</p>
+
+  <h3>ExtendedDjangoModelPermissions</h3>
+  <p>File: <code>main/helper/customPermissionsHelper.py</code>. Replaces DRF's default <code>DjangoModelPermissions</code> as the global permission class.</p>
+
+  <p>It keeps the standard Django-permission model, but adds stricter read access checks and a supporting-data fallback for read-only reference endpoints. In practice, the rule is: all permission checks are centralized in the custom class, and most view-level permission logic is declarative instead of ad hoc.</p>
+
+  <div class="callout info">
+    <strong>This is the default permission class</strong> set in <code>REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES</code>. Every view uses it unless <code>permission_classes</code> is overridden explicitly.
+  </div>
+
+  <h3>CustomBackend</h3>
+  <p>File: <code>main/helper/customPermissionsHelper.py</code>. Custom Django authentication backend registered in <code>AUTHENTICATION_BACKENDS</code>.</p>
+  <p>Overrides <code>_get_group_permissions</code> to resolve group permissions through <code>ExtendedGroup</code> (via the <code>extendedgroup__</code> relation) instead of Django's built-in <code>Group</code>. This means all permission checks (<code>user.has_perm()</code>, <code>DjangoModelPermissions</code>) work against <code>ExtendedGroup</code> memberships, not the default group system.</p>
+
+  <!-- ===== SERIALIZERS ===== -->
+  <h2 id="serializers">Serializers</h2>
+
+  <h3>SerializerWithCustomErrorMessage</h3>
+  <p>File: <code>utils/custom.py</code>. Subclass this instead of <code>serializers.Serializer</code> to get user-friendly error messages on all fields automatically. Works recursively on nested serializers and list serializers.</p>
+
+  <pre><code><span class="kw">from</span> utils.custom <span class="kw">import</span> SerializerWithCustomErrorMessage
+
+<span class="kw">class</span> <span class="fn">FlightCreateSerializer</span>(SerializerWithCustomErrorMessage):
+    dep_date = serializers.DateField()
+    airline  = serializers.PrimaryKeyRelatedField(queryset=Airline.objects.all())
+    <span class="comment"># DRF's "This field may not be blank." → "This field can not be empty."</span>
+    <span class="comment"># DRF's "Enter a valid date."           → "Please enter a valid value."</span></code></pre>
+
+  <table>
+    <tr><th>DRF error code</th><th>Replaced with</th></tr>
+    <tr><td><code>required</code></td><td>This field is required.</td></tr>
+    <tr><td><code>blank</code> · <code>empty</code></td><td>This field can not be empty.</td></tr>
+    <tr><td><code>null</code></td><td>This field is required.</td></tr>
+    <tr><td><code>invalid</code> · <code>incorrect_type</code></td><td>Please enter a valid value.</td></tr>
+    <tr><td><code>invalid_choice</code></td><td>Please select a valid option.</td></tr>
+  </table>
+
+  <h3>FK display labels in activity log</h3>
+  <p>When a foreign key field changes, the diff records both the PK (<code>from</code> / <code>to</code>) and a human-readable label (<code>from_label</code> / <code>to_label</code>). The label comes from <code>get_log_label()</code> on the related model. Without it, <code>str(instance)</code> is used as a fallback.</p>
+
+  <pre><code><span class="kw">class</span> <span class="fn">Airline</span>(TimeStampedSoftDeletableModel):
+    name = models.CharField(max_length=100)
+
+    <span class="kw">def</span> <span class="fn">get_log_label</span>(self):
+        <span class="kw">return</span> self.name   <span class="comment"># → stored as "from_label" / "to_label" in changes</span></code></pre>
+
+  <h3>JWT custom claims</h3>
+  <p>Use <code>get_token_with_custom_claims(user, claims)</code> in <code>utils/custom.py</code> when issuing tokens that need to carry extra data (e.g. <code>active_company</code>, <code>impersonated_by</code>). Returns both access and refresh tokens with the extra claims embedded.</p>
+
+  <pre><code><span class="kw">from</span> utils.custom <span class="kw">import</span> get_token_with_custom_claims
+
+tokens = get_token_with_custom_claims(user, {
+    <span class="str">"active_company"</span>: company.id,
+    <span class="str">"impersonated_by"</span>: admin_user.username,
+})
+<span class="comment"># → { "access": "...", "refresh": "..." }</span></code></pre>
+
+  <hr class="divider">
+  <p style="color:var(--muted); font-size:12px;">Last updated: November 2026 · Bane Invoice Backend</p>
+</main>
+
+<script>
+  const sections = document.querySelectorAll('h2[id], h3[id]');
+  const links    = document.querySelectorAll('nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '0px 0px -65% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
